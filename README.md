@@ -34,6 +34,23 @@ See `JustKidding.css` for more in-depth styling.
 
 ### Events
 
+JustKidding will fire the following events during its life-cycle:
+
+#### `focus.justKidding`
+
+Fired on the newly-selected element after a keypress if the cursor
+moves (i.e. if there are more elements in the direction indicated).
+
+#### `blur.justKidding`
+
+Fired on the previously-selected element after a keypress if the cursor
+moves (i.e. if there are more elements in the direction indicated).
+
+#### `outofbounds.justKidding`
+
+Fired on the currently-selected element after a keypress if the cursor
+cannot move in the specified direction.
+
 ### Options
 
 The widget accepts a number of options to fine-tune behavior.
