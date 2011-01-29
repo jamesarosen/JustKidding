@@ -37,19 +37,19 @@ See `JustKidding.css` for more in-depth styling.
 JustKidding will fire the following events during its life-cycle:
 
 <dl>
-  <dt>`focus.justKidding`</dt>
+  <dt><code>focus.justKidding</code></dt>
   <dd>
     Fired on the newly-selected element after a keypress if the cursor
     moves (i.e. if there are more elements in the direction indicated).
   </dd>
 
-  <dt>`blur.justKidding`</dt>
+  <dt><code>blur.justKidding</code></dt>
   <dd>
     Fired on the previously-selected element after a keypress if the cursor
     moves (i.e. if there are more elements in the direction indicated).
   </dd>
 
-  <dt>`outofbounds.justKidding`</dt>
+  <dt><code>outofbounds.justKidding</code></dt>
   <dd>
     Fired on the currently-selected element after a keypress if the cursor
     cannot move in the specified direction.
@@ -61,38 +61,39 @@ JustKidding will fire the following events during its life-cycle:
 The widget accepts a number of options to fine-tune behavior.
 
 <dl>
-  <dt>`initialSelector`</dt>
+  <dt><code>initialSelector</code></dt>
   <dd>
-    determines which element in the list or table
-    is selected on page load. It accepts either a number or a string. If a
-    number, it is converted into an `nth-child` query. If a string, it is
-    treated as a jQuery selector within the list or table. Defaults to `1`.
+    determines which element in the list or table is selected on page load. It
+    accepts either a number or a string. If a number, it is converted into an
+    <code>nth-child</code> query. If a string, it is treated as a jQuery
+    selector within the list or table. Defaults to <code>1</code>.
   </dd>
 
-  <dt>`wasd`</dt>
+  <dt><code>wasd</code></dt>
   <dd>
     enables navigation with the *w* and *s* keys (up
-    and down respectively). Defaults to `false`.
+    and down respectively). Defaults to <code>false</code>.
   </dd>
 
-  <dt>`vim`</dt>
+  <dt><code>vim</code></dt>
   <dd>
-    enables navigation with the *j* and *k* keys
-    (down and up respectively). Defaults to `true`.
+    enables navigation with the <i>j</i> and <i>k</i> keys
+    (down and up respectively). Defaults to <code>true</code>.
   </dd>
 
-  <dt>`tbodyOnly`</dt>
+  <dt><code>tbodyOnly</code></dt>
   <dd>
-    When `justKidding()` is called on a `<table>` element, determines whether
-    all rows (`<tr>s`) are eligible for navigation or just those in the `<tbody>`.
-    Defaults to `true`.
+    When <code>justKidding()</code> is called on a <code>&lt;table&gt;</code>
+    element, determines whether all rows (<code>&lt;tr&gt;</code>s) are
+    eligible for navigation or just those in the <code>&lt;tbody&gt;</code>.
+    Defaults to <code>true</code>.
   </dd>
 
-  <dt>`activationKeys`</dt>
+  <dt><code>activationKeys</code></dt>
   <dd>
     When the user presses one of the keys in this list while focused on one of
-    the elements, JustKidding will fire an activation event (see events, above).
-    Defaults to `[ 13 ]` (the ENTER key).
+    the elements, JustKidding will fire an activation event (see events,
+    above). Defaults to <code>[ 13 ]</code> (the ENTER key).
   </dd>
 </dl>
 
@@ -105,8 +106,8 @@ subsequent calls to `justKidding()` will log a warning and return immediately.
 
 ## Contributing ##
 
-For bug reports, open an [issue](https://github.com/jamesarosen/JustKidding/issues)
-on GitHub.
+For bug reports, open an
+[issue](https://github.com/jamesarosen/JustKidding/issues) on GitHub.
 
 JustKidding has a ‘commit-bit’ policy, much like the Rubinius project
 and Gemcutter. Submit a patch that is accepted, and you can get full
