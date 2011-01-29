@@ -36,53 +36,65 @@ See `JustKidding.css` for more in-depth styling.
 
 JustKidding will fire the following events during its life-cycle:
 
-#### `focus.justKidding`
+<dl>
+  <dt>`focus.justKidding`</dt>
+  <dd>
+    Fired on the newly-selected element after a keypress if the cursor
+    moves (i.e. if there are more elements in the direction indicated).
+  </dd>
 
-Fired on the newly-selected element after a keypress if the cursor
-moves (i.e. if there are more elements in the direction indicated).
+  <dt>`blur.justKidding`</dt>
+  <dd>
+    Fired on the previously-selected element after a keypress if the cursor
+    moves (i.e. if there are more elements in the direction indicated).
+  </dd>
 
-#### `blur.justKidding`
-
-Fired on the previously-selected element after a keypress if the cursor
-moves (i.e. if there are more elements in the direction indicated).
-
-#### `outofbounds.justKidding`
-
-Fired on the currently-selected element after a keypress if the cursor
-cannot move in the specified direction.
+  <dt>`outofbounds.justKidding`</dt>
+  <dd>
+    Fired on the currently-selected element after a keypress if the cursor
+    cannot move in the specified direction.
+  </dd>
+</dl>
 
 ### Options
 
 The widget accepts a number of options to fine-tune behavior.
 
-#### `initialSelector`
+<dl>
+  <dt>`initialSelector`</dt>
+  <dd>
+    determines which element in the list or table
+    is selected on page load. It accepts either a number or a string. If a
+    number, it is converted into an `nth-child` query. If a string, it is
+    treated as a jQuery selector within the list or table. Defaults to `1`.
+  </dd>
 
-The `initialSelector` option determines which element in the list or table
-is selected on page load. It accepts either a number or a string. If a
-number, it is converted into an `nth-child` query. If a string, it is
-treated as a jQuery selector within the list or table. Defaults to `1`.
+  <dt>`wasd`</dt>
+  <dd>
+    enables navigation with the *w* and *s* keys (up
+    and down respectively). Defaults to `false`.
+  </dd>
 
-#### `wasd`
+  <dt>`vim`</dt>
+  <dd>
+    enables navigation with the *j* and *k* keys
+    (down and up respectively). Defaults to `true`.
+  </dd>
 
-The `wasd` option enables navigation with the *w* and *s* keys (up
-and down respectively). Defaults to `false`.
+  <dt>`tbodyOnly`</dt>
+  <dd>
+    When `justKidding()` is called on a `<table>` element, determines whether
+    all rows (`<tr>s`) are eligible for navigation or just those in the `<tbody>`.
+    Defaults to `true`.
+  </dd>
 
-#### `vim`
-
-The `vim` option enables navigation with the *j* and *k* keys
-(down and up respectively). Defaults to `true`.
-
-#### `tbodyOnly`
-
-When `justKidding()` is called on a `<table>` element, this determines whether
-all rows (`<tr>s`) are eligible for navigation or just those in the `<tbody>`.
-Defaults to `true`.
-
-#### `activationKeys`
-
-When the user presses one of the keys in this list while focused on one of
-the elements, JustKidding will fire an activation event (see events, above).
-Defaults to `[ 13 ]` (the ENTER key).
+  <dt>`activationKeys`</dt>
+  <dd>
+    When the user presses one of the keys in this list while focused on one of
+    the elements, JustKidding will fire an activation event (see events, above).
+    Defaults to `[ 13 ]` (the ENTER key).
+  </dd>
+</dl>
 
 ### Multiple lists or tables
 
