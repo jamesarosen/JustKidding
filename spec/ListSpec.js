@@ -14,7 +14,9 @@ describe('JustKidding', function() {
 
     describe('called with no options', function() {
 
-      beforeEach(function() { $('#events').justKidding(); });
+      var justKidding;
+
+      beforeEach(function() { justKidding = $('#events').justKidding(); });
 
       it('should add the class "justKidding" to the list', function() {
         expect($('#events')).toHaveClass('justKidding');
@@ -22,6 +24,10 @@ describe('JustKidding', function() {
 
       it('should highlight the first <li>', function() {
         expect($('.current').html()).toEqual('Hanna was eaten by a pterodactyl');
+      });
+
+      it('should return the jQuery DOM query on which it was called', function() {
+        expect(justKidding).toEqual($('#events'));
       });
 
     });
