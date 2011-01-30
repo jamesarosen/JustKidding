@@ -32,19 +32,21 @@ describe('JustKidding', function() {
       beforeEach(function() {
         console.log('beginning of beforeEach', new Date());
         $('body')
-          .bind('blur.justKidding',  function(e) { blurEvent  = e; })
-          .bind('focus.justKidding', function(e) { focusEvent = e; })
-          .simulate('keypress', { charCode: 'j'.charCodeAt(0) });
+          .bind('blur.justKidding',  function(e) { console.log('blur.justKidding'); blurEvent  = e; })
+          .bind('focus.justKidding', function(e) { console.log('focus.justKidding'); focusEvent = e; });
       });
 
       it('should select the next element', function() {
+        runs(function() {
+          $('body').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
+        });
         waitsFor(function() {
           return blurEvent || focusEvent;
         }, "events to fire", 1000);
         runs(function() {
           expect($('.current').html()).toEqual('Jakob became a crab farmer');
+          console.log('end of it', new Date());
         });
-        console.log('end of it', new Date());
       });
 
       xit('should fire a blur event on the previously selected element', function() {

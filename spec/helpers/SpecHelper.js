@@ -48,7 +48,6 @@
   });
 
   afterEach(function() {
-    debugger;
     console.log('beginning of afterEach', new Date());
     jasmineExtensions.jQuerySpies = {};
     $('*').unbind('.justKidding');
