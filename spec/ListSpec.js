@@ -36,6 +36,7 @@ describe('JustKidding', function() {
       var blurEvent, focusEvent;
 
       beforeEach(function() {
+        blurEvent = focusEvent = null;
         $('#events').justKidding();
         $('body')
           .bind('blur.justKidding',  function(e) { blurEvent  = e; })
@@ -69,6 +70,59 @@ describe('JustKidding', function() {
         runs(function() {
           expect(focusEvent).toBeTruthy();
           expect($(focusEvent.target)).toHaveText(/Jakob/);
+        });
+      });
+    });
+
+    describe('when there are no more elements below the currently-selected element', function() {
+      var blurEvent, focusEvent, outOfBoundsEvent;
+
+      beforeEach(function() {
+        blurEvent = focusEvent = outOfBoundsEvent = null;
+        $('#events')
+          .justKidding()
+          .find('li:not(:first-child)').remove()
+        $('body')
+          .bind('blur.justKidding',         function(e) { blurEvent         = e; })
+          .bind('focus.justKidding',        function(e) { focusEvent        = e; })
+          .bind('outofbounds.justKidding',  function(e) { outOfBoundsEvent  = e; })
+          .simulate('keypress', { charCode: 'j'.charCodeAt(0) });
+      });
+
+      it('should leave the current element selected', function() {
+        waitsFor(function() {
+          return blurEvent || focusEvent || outOfBoundsEvent;
+        }, "events to fire", 1000);
+        runs(function() {
+          expect($('.current')).toHaveText(/Hanna/);
+        });
+      });
+
+      it('should not fire a blur event', function() {
+        waitsFor(function() {
+          return blurEvent || focusEvent || outOfBoundsEvent;
+        }, "events to fire", 1000);
+        runs(function() {
+          expect(blurEvent).toBeFalsy();
+        });
+      });
+
+      it('should not fire a focus event', function() {
+        waitsFor(function() {
+          return blurEvent || focusEvent || outOfBoundsEvent;
+        }, "events to fire", 1000);
+        runs(function() {
+          expect(focusEvent).toBeFalsy();
+        });
+      });
+
+      it('should fire an out-of-bounds event on the selected element', function() {
+        waitsFor(function() {
+          return blurEvent || focusEvent || outOfBoundsEvent;
+        }, "events to fire", 1000);
+        runs(function() {
+          expect(outOfBoundsEvent).toBeTruthy();
+          expect($(outOfBoundsEvent.target)).toHaveText(/Hanna/);
         });
       });
     });
