@@ -8,9 +8,7 @@ describe('JustKidding', function() {
                   "  <li>Vijay is in an awkward relationship</li>" +
                   "</ol>";
 
-    beforeEach(function() { $('body').append(fixture); });
-
-    afterEach(function() { $('#events').remove(); });
+    beforeEach(function() { setFixtures(fixture) });
 
     describe('called with no options', function() {
 
