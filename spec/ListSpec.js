@@ -30,42 +30,39 @@ describe('JustKidding', function() {
       var blurEvent, focusEvent;
 
       beforeEach(function() {
-        console.log('beginning of beforeEach', new Date());
+        $('#events').justKidding();
         $('body')
-          .bind('blur.justKidding',  function(e) { console.log('blur.justKidding'); blurEvent  = e; })
-          .bind('focus.justKidding', function(e) { console.log('focus.justKidding'); focusEvent = e; });
+          .bind('blur.justKidding',  function(e) { blurEvent  = e; })
+          .bind('focus.justKidding', function(e) { focusEvent = e; })
+          .simulate('keypress', { charCode: 'j'.charCodeAt(0) });
       });
 
       it('should select the next element', function() {
-        runs(function() {
-          $('body').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
-        });
         waitsFor(function() {
           return blurEvent || focusEvent;
         }, "events to fire", 1000);
         runs(function() {
-          expect($('.current').html()).toEqual('Jakob became a crab farmer');
-          console.log('end of it', new Date());
+          expect($('.current')).toHaveText(/Jakob/);
         });
       });
 
-      xit('should fire a blur event on the previously selected element', function() {
+      it('should fire a blur event on the previously selected element', function() {
         waitsFor(function() {
           return blurEvent || focusEvent;
         }, "events to fire", 1000);
         runs(function() {
           expect(blurEvent).toBeTruthy();
-          expect($(blurEvent.target).html()).toEqual('Hanna was eaten by a pterodactyl');
+          expect($(blurEvent.target)).toHaveText(/Hanna/);
         });
       });
 
-      xit('should fire a focus event on the newly selected element', function() {
+      it('should fire a focus event on the newly selected element', function() {
         waitsFor(function() {
           return blurEvent || focusEvent;
         }, "events to fire", 1000);
         runs(function() {
           expect(focusEvent).toBeTruthy();
-          expect($(focusEvent.target).html()).toEqual('Jakob became a crab farmer');
+          expect($(focusEvent.target)).toHaveText(/Jakob/);
         });
       });
     });
