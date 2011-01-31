@@ -44,7 +44,7 @@ describe('JustKidding', function() {
       });
     });
 
-    xdescribe('option wasd', function() {
+    describe('option wasd', function() {
       it('should be off by default', function() {
         $('#events').justKidding();
         $('body').simulate('keypress', { charCode: 'w'.charCodeAt(0) });
@@ -66,6 +66,24 @@ describe('JustKidding', function() {
         $('body').simulate('keypress', { charCode: 'w'.charCodeAt(0) });
         this.afterJustKiddingEvents(function() {
           expect($('.current')).toHaveAttr('data-index', 2);
+        });
+      });
+    });
+
+    describe('option vim', function() {
+      it('should be on by default', function() {
+        $('#events').justKidding({ initialSelector: 1 });
+        $('body').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
+        this.afterJustKiddingEvents(function() {
+          expect($('.current')).toHaveAttr('data-index', 2);
+        });
+      });
+
+      it('should disable j/k navigation when turned off', function() {
+        $('#events').justKidding({ vim: false, initialSelector: 1 });
+        $('body').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
+        this.afterJustKiddingEvents(function() {
+          expect($('.current')).toHaveAttr('data-index', 1);
         });
       });
     });
