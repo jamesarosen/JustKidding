@@ -11,19 +11,15 @@ describe('JustKidding', function() {
     beforeEach(function() { setFixtures(fixture); });
 
     describe('called with no options', function() {
-
-      var justKidding;
-
-      beforeEach(function() { justKidding = $('#events').justKidding(); });
-
       it('should add the class "justKidding" to the list', function() {
-        expect($('#events')).toHaveClass('justKidding');
+        expect($('#events').justKidding()).toHaveClass('justKidding');
       });
 
-      it('should return the jQuery DOM query on which it was called', function() {
-        expect(justKidding).toEqual($('#events'));
+      it('should make the JustKidding instance available as a data-attribute', function() {
+        var jk = $('#events').justKidding().data('justKidding');
+        expect(jk).toBeTruthy();
+        expect(jk).toHaveFunction('moveTo');
       });
-
     });
 
     describe('option initialSelector', function() {
