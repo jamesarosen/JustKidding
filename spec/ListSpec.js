@@ -44,6 +44,32 @@ describe('JustKidding', function() {
       });
     });
 
+    xdescribe('option wasd', function() {
+      it('should be off by default', function() {
+        $('#events').justKidding();
+        $('body').simulate('keypress', { charCode: 'w'.charCodeAt(0) });
+        this.afterJustKiddingEvents(function() {
+          expect($('.current')).toHaveAttr('data-index', 1);
+        });
+      });
+
+      it('should enable navigation down by "s"', function() {
+        $('#events').justKidding({ wasd: true, initialSelector: 1 });
+        $('body').simulate('keypress', { charCode: 's'.charCodeAt(0) });
+        this.afterJustKiddingEvents(function() {
+          expect($('.current')).toHaveAttr('data-index', 2);
+        });
+      });
+
+      it('should enable navigation up by "w"', function() {
+        $('#events').justKidding({ wasd: true, initialSelector: 3 });
+        $('body').simulate('keypress', { charCode: 'w'.charCodeAt(0) });
+        this.afterJustKiddingEvents(function() {
+          expect($('.current')).toHaveAttr('data-index', 2);
+        });
+      });
+    });
+
     describe('when there are more elements below the currently-selected element, pressing "j"', function() {
       beforeEach(function() {
         $('#events').justKidding();
