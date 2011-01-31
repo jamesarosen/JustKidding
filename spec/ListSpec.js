@@ -48,7 +48,7 @@ describe('JustKidding', function() {
       });
     });
 
-    describe('when there are more elements below the currently-selected element', function() {
+    describe('when there are more elements below the currently-selected element, pressing "j"', function() {
       beforeEach(function() {
         $('#events').justKidding();
         $('body').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
@@ -63,7 +63,7 @@ describe('JustKidding', function() {
       it('should fire a blur event on the previously selected element', function() {
         this.afterJustKiddingEvents(function() {
           expect(this.blurEvent).toBeTruthy();
-          expect($(this.blurEvent.target)).toHaveAttr('data-index', 2);
+          expect($(this.blurEvent.target)).toHaveAttr('data-index', 1);
         });
       });
 
@@ -75,7 +75,7 @@ describe('JustKidding', function() {
       });
     });
 
-    describe('when there are no more elements below the currently-selected element', function() {
+    describe('when there are no more elements below the currently-selected element, pressing "j"', function() {
       beforeEach(function() {
         $('#events').justKidding({ initialSelector: ':last-child' });
         this.focusEvent = null; // erase the initial focus event from creation
@@ -104,6 +104,66 @@ describe('JustKidding', function() {
         this.afterJustKiddingEvents(function() {
           expect(this.outOfBoundsEvent).toBeTruthy();
           expect($(this.outOfBoundsEvent.target)).toHaveAttr('data-index', 3);
+        });
+      });
+    });
+
+    describe('when there are more elements above the currently-selected element, pressing "k"', function() {
+      beforeEach(function() {
+        $('#events').justKidding({ initialSelector: 2 });
+        $('body').simulate('keypress', { charCode: 'k'.charCodeAt(0) });
+      });
+
+      it('should select the previous element', function() {
+        this.afterJustKiddingEvents(function() {
+          expect($('.current')).toHaveAttr('data-index', 1);
+        });
+      });
+
+      it('should fire a blur event on the previously selected element', function() {
+        this.afterJustKiddingEvents(function() {
+          expect(this.blurEvent).toBeTruthy();
+          expect($(this.blurEvent.target)).toHaveAttr('data-index', 2);
+        });
+      });
+
+      it('should fire a focus event on the newly selected element', function() {
+        this.afterJustKiddingEvents(function() {
+          expect(this.focusEvent).toBeTruthy();
+          expect($(this.focusEvent.target)).toHaveAttr('data-index', 1);
+        });
+      });
+    });
+
+    describe('when there are no more elements below the currently-selected element, pressing "k"', function() {
+      beforeEach(function() {
+        $('#events').justKidding({ initialSelector: 1 });
+        this.focusEvent = null; // erase the initial focus event from creation
+        $('body').simulate('keypress', { charCode: 'k'.charCodeAt(0) });
+      });
+
+      it('should leave the current element selected', function() {
+        this.afterJustKiddingEvents(function() {
+          expect($('.current')).toHaveAttr('data-index', 1);
+        });
+      });
+
+      it('should not fire a blur event', function() {
+        this.afterJustKiddingEvents(function() {
+          expect(this.blurEvent).toBeFalsy();
+        });
+      });
+
+      it('should not fire a focus event', function() {
+        this.afterJustKiddingEvents(function() {
+          expect(this.focusEvent).toBeFalsy();
+        });
+      });
+
+      it('should fire an out-of-bounds event on the selected element', function() {
+        this.afterJustKiddingEvents(function() {
+          expect(this.outOfBoundsEvent).toBeTruthy();
+          expect($(this.outOfBoundsEvent.target)).toHaveAttr('data-index', 1);
         });
       });
     });
