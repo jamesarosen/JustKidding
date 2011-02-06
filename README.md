@@ -71,7 +71,7 @@ The widget accepts a number of options to fine-tune behavior.
 
   <dt><code>wasd</code></dt>
   <dd>
-    enables navigation with the *w* and *s* keys (up
+    enables navigation with the <i>w</i> and <i>s</i> keys (up
     and down respectively). Defaults to <code>false</code>.
   </dd>
 
@@ -79,6 +79,15 @@ The widget accepts a number of options to fine-tune behavior.
   <dd>
     enables navigation with the <i>j</i> and <i>k</i> keys
     (down and up respectively). Defaults to <code>true</code>.
+  </dd>
+
+  <dt><code>actOnEvent</code></dt>
+  <dd>
+    a function that returns true if JustKidding should act on an event.
+    Defaults to returning <code>false</code> if the event's source was an
+    <code>input</code> or <code>textarea</code>, <code>true</code> otherwise.
+    (NB: JustKidding only listens for <code>keypress</code> that have no
+    namespace or the namespace <code>justKidding</code>.)
   </dd>
 
   <dt><code>tbodyOnly</code></dt>
