@@ -32,6 +32,12 @@ the following on your page:
 
 See `JustKidding.css` for more in-depth styling.
 
+### Tables
+
+Calling `justKidding` on a `<table>` will act as though it was called on
+the `<table>`s `<tbody>` element if present. That is, rows within the
+`<thead>` and `<tfoot>` will not be navigable.
+
 ### Events
 
 JustKidding will fire the following events during its life-cycle:
@@ -88,14 +94,6 @@ The widget accepts a number of options to fine-tune behavior.
     <code>input</code> or <code>textarea</code>, <code>true</code> otherwise.
     (NB: JustKidding only listens for <code>keypress</code> that have no
     namespace or the namespace <code>justKidding</code>.)
-  </dd>
-
-  <dt><code>tbodyOnly</code></dt>
-  <dd>
-    When <code>justKidding()</code> is called on a <code>&lt;table&gt;</code>
-    element, determines whether all rows (<code>&lt;tr&gt;</code>s) are
-    eligible for navigation or just those in the <code>&lt;tbody&gt;</code>.
-    Defaults to <code>true</code>.
   </dd>
 
   <dt><code>activationKeys</code></dt>
