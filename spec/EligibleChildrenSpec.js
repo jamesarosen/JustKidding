@@ -3,9 +3,11 @@ describe('JustKidding', function() {
   describe('with the eligibleChildren option', function() {
 
     var fixture = "<ol id='cats'>" +
-                  "  <div class='listContainer'>" +
+                  "  <div class='group1'>" +
                   "    <li data-index='1' class='disabled'>1</li>" +
                   "    <li data-index='2'>2</li>" +
+                  "  </div>" +
+                  "  <div class='group2'>" +
                   "    <li data-index='3' class='disabled'>3</li>" +
                   "    <li data-index='4'>4</li>" +
                   "  </div>" +
