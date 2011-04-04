@@ -208,17 +208,6 @@ describe('JustKidding', function() {
       });
     });
 
-    it('should ignore keypresses from inputs', function() {
-      $('#events').justKidding({ initialSelector: 2 });
-      var input = $('<input>')
-        .appendTo($('body'))
-        .simulate('keypress', { charCode: 'j'.charCodeAt(0) });
-      this.after(function() { input.remove() });
-      this.afterJustKiddingEvents(function() {
-        expect(this.blurEvent).toBeFalsy();
-      });
-    });
-
   });
 
 });
