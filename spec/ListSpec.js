@@ -25,22 +25,22 @@ describe('JustKidding', function() {
     describe('option initialSelector', function() {
       it('should assume "first-child" if not specified', function() {
         $('#events').justKidding({ initialSelector: null });
-        expect($('.current')).toHaveAttr('data-index', 1);
+        expect($('.jk-current')).toHaveAttr('data-index', 1);
       });
 
       it('should default to "first-child" if an invalid filter is specified', function() {
         $('#events').justKidding({ initialSelector: ':nth-child(1000)' });
-        expect($('.current')).toHaveAttr('data-index', 1);
+        expect($('.jk-current')).toHaveAttr('data-index', 1);
       });
 
       it('should convert an integer to an index', function() {
         $('#events').justKidding({ initialSelector: 3 });
-        expect($('.current')).toHaveAttr('data-index', 3);
+        expect($('.jk-current')).toHaveAttr('data-index', 3);
       });
 
       it('should treat a String as a jQuery filter', function() {
         $('#events').justKidding({ initialSelector: '.bar' });
-        expect($('.current')).toHaveAttr('data-index', 2);
+        expect($('.jk-current')).toHaveAttr('data-index', 2);
       });
     });
 
@@ -49,7 +49,7 @@ describe('JustKidding', function() {
         $('#events').justKidding();
         $('body').simulate('keypress', { charCode: 'w'.charCodeAt(0) });
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 1);
+          expect($('.jk-current')).toHaveAttr('data-index', 1);
         });
       });
 
@@ -57,7 +57,7 @@ describe('JustKidding', function() {
         $('#events').justKidding({ wasd: true, initialSelector: 1 });
         $('body').simulate('keypress', { charCode: 's'.charCodeAt(0) });
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 2);
+          expect($('.jk-current')).toHaveAttr('data-index', 2);
         });
       });
 
@@ -65,7 +65,7 @@ describe('JustKidding', function() {
         $('#events').justKidding({ wasd: true, initialSelector: 3 });
         $('body').simulate('keypress', { charCode: 'w'.charCodeAt(0) });
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 2);
+          expect($('.jk-current')).toHaveAttr('data-index', 2);
         });
       });
     });
@@ -75,7 +75,7 @@ describe('JustKidding', function() {
         $('#events').justKidding({ initialSelector: 1 });
         $('body').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 2);
+          expect($('.jk-current')).toHaveAttr('data-index', 2);
         });
       });
 
@@ -83,7 +83,7 @@ describe('JustKidding', function() {
         $('#events').justKidding({ vim: false, initialSelector: 1 });
         $('body').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 1);
+          expect($('.jk-current')).toHaveAttr('data-index', 1);
         });
       });
     });
@@ -96,7 +96,7 @@ describe('JustKidding', function() {
 
       it('should select the next element', function() {
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 2);
+          expect($('.jk-current')).toHaveAttr('data-index', 2);
         });
       });
 
@@ -124,7 +124,7 @@ describe('JustKidding', function() {
 
       it('should leave the current element selected', function() {
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 3);
+          expect($('.jk-current')).toHaveAttr('data-index', 3);
         });
       });
 
@@ -156,7 +156,7 @@ describe('JustKidding', function() {
 
       it('should select the previous element', function() {
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 1);
+          expect($('.jk-current')).toHaveAttr('data-index', 1);
         });
       });
 
@@ -184,7 +184,7 @@ describe('JustKidding', function() {
 
       it('should leave the current element selected', function() {
         this.afterJustKiddingEvents(function() {
-          expect($('.current')).toHaveAttr('data-index', 1);
+          expect($('.jk-current')).toHaveAttr('data-index', 1);
         });
       });
 

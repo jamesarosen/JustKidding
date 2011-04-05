@@ -19,20 +19,20 @@ describe('JustKidding', function() {
     });
 
     it('should select the first eligible child', function() {
-      expect($('#cats .current')).toHaveAttr('data-index', 2);
+      expect($('#cats .jk-current')).toHaveAttr('data-index', 2);
     });
 
     it('should skip ineligible children when navigating', function() {
       $('body').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
       this.afterJustKiddingEvents(function() {
-        expect($('#cats .current')).toHaveAttr('data-index', 4);
+        expect($('#cats .jk-current')).toHaveAttr('data-index', 4);
       });
     });
 
     it('should not move in a direction that has no eligible children', function() {
       $('body').simulate('keypress', { charCode: 'k'.charCodeAt(0) });
       this.afterJustKiddingEvents(function() {
-        expect($('#cats .current')).toHaveAttr('data-index', 2);
+        expect($('#cats .jk-current')).toHaveAttr('data-index', 2);
       });
     });
 

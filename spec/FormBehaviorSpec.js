@@ -18,7 +18,7 @@ describe('JustKidding', function() {
       $('#aTextInput').simulate('keypress', { charCode: 'j'.charCodeAt(0) });
       this.afterJustKiddingEvents(function() {
         expect(this.blurEvent).toBeFalsy();
-        expect($('#snacks .current')).toHaveAttr('data-index', 1);
+        expect($('#snacks .jk-current')).toHaveAttr('data-index', 1);
       });
     });
 
