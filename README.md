@@ -1,3 +1,8 @@
+JustKidding supports keyboard navigation for lists and tables.
+
+Full documentation:
+[http://jamesarosen.github.com/JustKidding/](http://jamesarosen.github.com/JustKidding/)
+
 ## Contributing ##
 
 For bug reports, open an
