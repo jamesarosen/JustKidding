@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>JustKidding.js</title>
+  <link rel="stylesheet" href="http://github.com/jashkenas/docco/raw/0.3.0/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>JustKidding.js</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-What'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-What">&#182;</a>
+        </div>
+        <p><a href="https://github.com/jamesarosen/JustKidding">JustKidding.js 0.2.0</a>
+&copy; 2011 James A. Rosen, Zendesk, Inc.
+JustKidding is freely distributable under the MIT license.</p>
+
+<h2>What</h2>
+
+<p>JustKidding is a jQuery widget that adds keyboard navigation to lists
+and tables on your site.</p>
+
+<h2>The Basics</h2>
+
+<p>Create a list on the page:</p>
+
+<pre><code>&lt;ol id='events'&gt;
+  &lt;li&gt;Hanna was eaten by a pterodactyl&lt;/li&gt;
+  &lt;li&gt;Jakob became a crab farmer&lt;/li&gt;
+  &lt;li&gt;Vijay is in an awkward relationship&lt;/li&gt;
+&lt;/ol&gt;
+</code></pre>
+
+<p>Add JustKidding to the list:</p>
+
+<pre><code>jQuery('#events').justKidding();
+</code></pre>
+
+<p>Users can now navigate down and up the list using the <em>j</em> and <em>k</em> keys. Of
+course, without some styling, they won&rsquo;t be able to <em>tell</em> that they&rsquo;re
+navigating up and down the list. Thus, it&rsquo;s important to have styles like
+the following on your page:</p>
+
+<pre><code>.justKidding .jk-current {
+  background-color: #ddd;
+}
+</code></pre>
+
+<h2>More Details</h2>
+
+<h3>Styling</h3>
+
+<p>See <code>JustKidding.css</code> for more in-depth styling.</p>
+
+<h3>Tables</h3>
+
+<p>Calling <code>justKidding</code> on a <code>&lt;table&gt;</code> will act as though it was called on
+the <code>&lt;table&gt;</code>s <code>&lt;tbody&gt;</code> element if present. That is, rows within the
+<code>&lt;thead&gt;</code> and <code>&lt;tfoot&gt;</code> will not be navigable.</p>
+
+<h3>Events</h3>
+
+<p>JustKidding will fire the following events during its life-cycle:</p>
+
+<dl>
+  <dt><code>focus.justKidding and focusin.justKidding</code></dt>
+  <dd>
+    Fired on the newly-selected element after a keypress if the cursor
+    moves (i.e. if there are more elements in the direction indicated).
+  </dd>
+
+  <dt><code>blur.justKidding and focusout.justKidding</code></dt>
+  <dd>
+    Fired on the previously-selected element after a keypress if the cursor
+    moves (i.e. if there are more elements in the direction indicated).
+  </dd>
+
+  <dt><code>outofbounds.justKidding</code></dt>
+  <dd>
+    Fired on the currently-selected element after a keypress if the cursor
+    cannot move in the specified direction.
+  </dd>
+
+  <dt><code>created.justKidding</code></dt>
+  <dd>
+    Fired when a JustKidding instance is created.
+  </dd>
+</dl>
+
+
+<h3>Options</h3>
+
+<p>The widget accepts a number of options to fine-tune behavior.</p>
+
+<dl>
+  <dt><code>initialSelector</code></dt>
+  <dd>
+    determines which element in the list or table is selected on page load.
+     It accepts either a number or a string. If a number, it is converted
+    into an <code>nth-child</code> query. If a string, it is treated as a
+    jQuery selector within the list or table. Defaults to <code>1</code>.
+  </dd>
+
+  <dt><code>eligibleChildren</code></dt>
+  <dd>
+    determines which elements in the list or table can be focused on via
+    keystrokes. You can use this to exclude certain elements (e.g.
+    by passing `":not(.disabled)"`) or to use some deeper descendants of
+    the container. Defaults to `"li"` when the container is an `ul` or
+    `ol` and to `"tbody tr"` when the container is a `table`.
+  </dd>
+
+  <dt><code>wasd</code></dt>
+  <dd>
+    enables navigation with the <i>w</i> and <i>s</i> keys (up
+    and down respectively). Defaults to <code>false</code>.
+  </dd>
+
+  <dt><code>vim</code></dt>
+  <dd>
+    enables navigation with the <i>j</i> and <i>k</i> keys
+    (down and up respectively). Defaults to <code>true</code>.
+  </dd>
+
+  <dt><code>actOnEvent</code></dt>
+  <dd>
+    a function that returns true if JustKidding should act on an event.
+    Defaults to returning <code>false</code> if the event's source was an
+    <code>input</code> or <code>textarea</code>, <code>true</code>
+    otherwise. (NB: JustKidding only listens for <code>keypress</code> that
+    have no namespace or the namespace <code>justKidding</code>.)
+  </dd>
+</dl>
+
+
+<h3>Multiple lists or tables</h3>
+
+<p>If you create multiple JustKidding instances on a page (e.g. via
+a call like jQuery(&lsquo;#cheeses,#meats,#wines&rsquo;).justKidding()), only one
+will have &ldquo;focus&rdquo; at a time. Only the instance that has focus will respond
+to keypress events. You can query a JustKidding instance&rsquo;s focus with
+<code>isInFocus()</code>. Whichever JustKidding instance was created first will have
+focus initially. You can change this in one of two ways:</p>
+
+<ol>
+<li>call <code>focus()</code> on a JustKidding instance</li>
+<li>trigger a <code>focusin.justKidding</code> event on one of the navigable children
+of a JustKidding container.</li>
+</ol>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nb">window</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>save some known key codes</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="s1">&#39;j&#39;</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">,</span> <span class="nx">k</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">,</span> <span class="nx">w</span> <span class="o">=</span> <span class="s1">&#39;w&#39;</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">,</span> <span class="nx">s</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>Print a warning message if possible; do nothing otherwise.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">warn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="p">};</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">warn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span> <span class="p">};</span>
+  <span class="p">}</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">defaultEligibleChildrenSelector</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">container</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">nodeName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;table&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s1">&#39;tbody tr&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;ul&#39;</span> <span class="o">||</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;ol&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s1">&#39;li&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="kd">var</span> <span class="nx">eligibleChildrenFor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">eligibleChildrenSelector</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">eligibleChildrenSelector</span> <span class="o">=</span> <span class="nx">eligibleChildrenSelector</span> <span class="o">||</span> <span class="nx">defaultEligibleChildrenSelector</span><span class="p">(</span><span class="nx">container</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">eligibleChildrenSelector</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">container</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">eligibleChildrenSelector</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">container</span><span class="p">.</span><span class="nx">children</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Parameters'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Parameters">&#182;</a>
+        </div>
+        <p>Given a jQuery list, a target element within the list and a direction
+(+1 for successor, -1 for predecessor), find the adjacent element in the
+list, or null if no such element exists.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li>$list &mdash; a jQuery node list</li>
+<li>$target &mdash; the starting point, a jQuery element</li>
+<li>delta &mdash; the direction in which to find the neighbor</li>
+</ul>
+
+
+<p>TODO: this is O(n). Is there a way to speed it up?
+See http://stackoverflow.com/questions/5545526</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">function</span> <span class="nx">adjacentInList</span><span class="p">(</span><span class="nx">$list</span><span class="p">,</span> <span class="nx">$target</span><span class="p">,</span> <span class="nx">delta</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">$list</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">$target</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">$target</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">$result</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="nx">$list</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">target</span> <span class="o">===</span> <span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$result</span> <span class="o">=</span> <span class="nx">$list</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">index</span> <span class="o">+</span> <span class="nx">delta</span><span class="p">,</span> <span class="nx">index</span> <span class="o">+</span> <span class="nx">delta</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">$result</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">$result</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Parameters'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Parameters">&#182;</a>
+        </div>
+        <p>Determine the element that should be initially selected for a container.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li>$eligibleChildren &mdash; a jQuery node list</li>
+<li>initialSelector &mdash; an Integer (the nth-child), String (a jQuery
+selector within the list), or null</li>
+</ul>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">initiallySelected</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$eligibleChildren</span><span class="p">,</span> <span class="nx">initialSelector</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">initialSelector</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">null</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">initialSelector</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">initialSelector</span> <span class="o">=</span> <span class="s1">&#39;:nth-child(&#39;</span> <span class="o">+</span> <span class="nx">initialSelector</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">initiallySelected</span> <span class="o">=</span> <span class="nx">$eligibleChildren</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">initialSelector</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">initiallySelected</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">initiallySelected</span> <span class="o">=</span> <span class="nx">$eligibleChildren</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">initiallySelected</span><span class="p">.</span><span class="nx">first</span><span class="p">();</span>
+  <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Parameters'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Parameters">&#182;</a>
+        </div>
+        <p>Determine which element should be selected next, given a JustKidding
+instance and a key code.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li>justKidding &mdash; a JustKidding instance</li>
+<li>which &mdash; the event&rsquo;s key code</li>
+</ul>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">calculateNewlySelected</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">justKidding</span><span class="p">,</span> <span class="nx">which</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">current</span>  <span class="o">=</span> <span class="nx">justKidding</span><span class="p">.</span><span class="nx">current</span><span class="p">()</span>
+      <span class="p">,</span> <span class="nx">eligible</span> <span class="o">=</span> <span class="nx">justKidding</span><span class="p">.</span><span class="nx">eligibleChildren</span><span class="p">()</span>
+      <span class="p">,</span> <span class="nx">up</span>       <span class="o">=</span> <span class="p">((</span><span class="nx">justKidding</span><span class="p">.</span><span class="nx">vim</span> <span class="o">&amp;&amp;</span> <span class="nx">which</span> <span class="o">===</span> <span class="nx">j</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">justKidding</span><span class="p">.</span><span class="nx">wasd</span> <span class="o">&amp;&amp;</span> <span class="nx">which</span> <span class="o">===</span> <span class="nx">s</span><span class="p">))</span>
+      <span class="p">,</span> <span class="nx">down</span>     <span class="o">=</span> <span class="p">((</span><span class="nx">justKidding</span><span class="p">.</span><span class="nx">vim</span> <span class="o">&amp;&amp;</span> <span class="nx">which</span> <span class="o">===</span> <span class="nx">k</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">justKidding</span><span class="p">.</span><span class="nx">wasd</span> <span class="o">&amp;&amp;</span> <span class="nx">which</span> <span class="o">===</span> <span class="nx">w</span><span class="p">));</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">up</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">adjacentInList</span><span class="p">(</span><span class="nx">eligible</span><span class="p">,</span> <span class="nx">current</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">up</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">eligible</span><span class="p">.</span><span class="nx">first</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">down</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">adjacentInList</span><span class="p">(</span><span class="nx">eligible</span><span class="p">,</span> <span class="nx">current</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">down</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">eligible</span><span class="p">.</span><span class="nx">last</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-8'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-8">&#182;</a>
+        </div>
+        <p>Bind event handlers for a JustKidding instance.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">bindEventHandlers</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">justKidding</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-9'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-9">&#182;</a>
+        </div>
+        <p>bind the keypress events for navigation:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;keypress.justKidding&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-10'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-10">&#182;</a>
+        </div>
+        <p>Ignore if out-of-focus or from a form element:
+TODO: we should skip events with key codes we don&rsquo;t care about
+TODO: rename actOnEvent to isFromIgnoredElement and reverse condition</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">justKidding</span><span class="p">.</span><span class="nx">isInFocus</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">justKidding</span><span class="p">.</span><span class="nx">actOnEvent</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-11'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-11">&#182;</a>
+        </div>
+        <p>figure out where the user wants to move:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="kd">var</span> <span class="nx">newlySelected</span> <span class="o">=</span> <span class="nx">calculateNewlySelected</span><span class="p">(</span><span class="nx">justKidding</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-12'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-12">&#182;</a>
+        </div>
+        <p>try to move there:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="k">if</span> <span class="p">(</span><span class="nx">newlySelected</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">justKidding</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">newlySelected</span><span class="p">);</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">justKidding</span><span class="p">.</span><span class="nx">current</span><span class="p">().</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;outofbounds.justKidding&#39;</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">})</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-13'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-13">&#182;</a>
+        </div>
+        <p>bind the focus events in case there are multiple JustKidding
+instances on the page:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;focusin.justKidding&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-14'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-14">&#182;</a>
+        </div>
+        <p>this event was triggered on an &ldquo;eligible child&rdquo; of <em>some</em>
+JustKidding instance. If it&rsquo;s mine, and I&rsquo;m out-of-focus, focus me.
+If it&rsquo;s not mine and I <em>am</em> focused, blur me.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="kd">var</span> <span class="nx">isFromThisJK</span> <span class="o">=</span> <span class="nx">justKidding</span><span class="p">.</span><span class="nx">eligibleChildren</span><span class="p">().</span><span class="nx">filter</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">isFromThisJK</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">justKidding</span><span class="p">.</span><span class="nx">isInFocus</span><span class="p">())</span> <span class="p">{</span> <span class="nx">justKidding</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span> <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isFromThisJK</span> <span class="o">&amp;&amp;</span> <span class="nx">justKidding</span><span class="p">.</span><span class="nx">isInFocus</span><span class="p">())</span> <span class="p">{</span> <span class="nx">justKidding</span><span class="p">.</span><span class="nx">blur</span><span class="p">();</span> <span class="p">}</span>
+      <span class="p">});</span>
+  <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-15'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-15">&#182;</a>
+        </div>
+        <p>It would really suck if filling out a form caused navigation to happen.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">tagsToIgnore</span> <span class="o">=</span> <span class="sr">/^input|textarea$/i</span><span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-16'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-16">&#182;</a>
+        </div>
+        <p>Default implementation of actOnEvent.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">defaultActOnEvent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">srcElement</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">tagsToIgnore</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">srcElement</span><span class="p">.</span><span class="nx">tagName</span><span class="p">));</span>
+  <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Parameters:'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Parameters:">&#182;</a>
+        </div>
+        <p>Create a new JustKidding instance.</p>
+
+<h3>Parameters:</h3>
+
+<ul>
+<li>container &mdash; a jQuery node</li>
+<li>options &mdash; an Object of additional options. See above for more info.</li>
+</ul>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kd">var</span> <span class="nx">JustKidding</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">container</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">container</span><span class="p">)</span>
+                  <span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;justKidding&#39;</span><span class="p">)</span>
+                  <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;justKidding&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-18'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-18">&#182;</a>
+        </div>
+        <p>merge options into this</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{});</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-19'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-19">&#182;</a>
+        </div>
+        <p>pointer to the currently-selected element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-20'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-20">&#182;</a>
+        </div>
+        <p>whether this JK instance is currently in-focus</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="kd">var</span> <span class="nx">isInFocus</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-21'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-21">&#182;</a>
+        </div>
+        <p>Public getter for the container</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">container</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">container</span><span class="p">;</span> <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-22'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-22">&#182;</a>
+        </div>
+        <p>save off the eligibleChildren option:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="kd">var</span> <span class="nx">eligibleChildrenSelector</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">eligibleChildren</span><span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-23'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-23">&#182;</a>
+        </div>
+        <p>Public getter for the eligible (navigable) children.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">eligibleChildren</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">eligibleChildrenFor</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">eligibleChildrenSelector</span><span class="p">);</span> <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-24'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-24">&#182;</a>
+        </div>
+        <p>Public getter for the currently-highlighted element.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">current</span><span class="p">;</span> <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-25'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-25">&#182;</a>
+        </div>
+        <p>Public getter for whether this JustKidding instance is the one
+currently in-focus (and thus currently responding to key events).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">isInFocus</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">isInFocus</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-26'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-26">&#182;</a>
+        </div>
+        <p>Focus on this JustKidding instance; it begins responding to key events.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">focus</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">isInFocus</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="nx">container</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;jk-in-focus&#39;</span><span class="p">);</span>
+      <span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;focus.justKidding&#39;</span><span class="p">);</span>
+      <span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;focusin.justKidding&#39;</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-27'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-27">&#182;</a>
+        </div>
+        <p>No longer focus on this JustKidding instance; it stops responding
+to key events.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">blur</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">isInFocus</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="nx">container</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;jk-in-focus&#39;</span><span class="p">);</span>
+      <span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;blur.justKidding&#39;</span><span class="p">);</span>
+      <span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;focusout.justKidding&#39;</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Parameters:'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Parameters:">&#182;</a>
+        </div>
+        <p>Move the cursor to +to+, triggering events and changing classes
+as necessary. Does nothing if +to+ is null, empty, or not an
+eligible child of the container.</p>
+
+<h3>Parameters:</h3>
+
+<ul>
+<li>to &mdash; a jQuery node within the set of eligible children</li>
+</ul>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">to</span> <span class="o">&amp;&amp;</span> <span class="nx">to</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">eligibleChildren</span><span class="p">().</span><span class="nx">filter</span><span class="p">(</span><span class="nx">to</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;jk-current&#39;</span><span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-29'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-29">&#182;</a>
+        </div>
+        <p>trigger blur events on the current element if we&rsquo;re in-focus:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">isInFocus</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;focusout.justKidding&#39;</span><span class="p">)</span>
+                                       <span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;blur.justKidding&#39;</span><span class="p">);</span>
+        <span class="nx">to</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;jk-current&#39;</span><span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-30'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-30">&#182;</a>
+        </div>
+        <p>trigger focus events on the to element if we&rsquo;re in-focus:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="nx">isInFocus</span> <span class="o">&amp;&amp;</span> <span class="nx">to</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;focus.justKidding&#39;</span><span class="p">)</span>
+                       <span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;focusin.justKidding&#39;</span><span class="p">);</span>
+        <span class="nx">current</span> <span class="o">=</span> <span class="nx">to</span><span class="p">;</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;Cannot move to &#39;</span> <span class="o">+</span> <span class="nx">to</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">bindEventHandlers</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.justKidding&#39;</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-31'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-31">&#182;</a>
+        </div>
+        <p>if this is the first instance on the page, focus on it</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="k">this</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+    <span class="p">};</span>
+    <span class="kd">var</span> <span class="nx">initial</span> <span class="o">=</span> <span class="nx">initiallySelected</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">eligibleChildren</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">initialSelector</span><span class="p">);</span>
+    <span class="nx">initial</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">initial</span><span class="p">);</span>
+    <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;created.justKidding&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="nx">JustKidding</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-32'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-32">&#182;</a>
+        </div>
+        <p>by default, focus on the first eligible child initially</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">initialSelector</span><span class="o">:</span>  <span class="mi">1</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-33'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-33">&#182;</a>
+        </div>
+        <p>by default, observe <i>j</i> and <i>k</i> for next and previous</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">vim</span><span class="o">:</span>              <span class="kc">true</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-34'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-34">&#182;</a>
+        </div>
+        <p>by default, do <strong>not</strong> observe <i>s</i> and <i>w</i> for next and previous</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">wasd</span><span class="o">:</span>             <span class="kc">false</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-35'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-35">&#182;</a>
+        </div>
+        <p>by default, ignore key events originating from form elements</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">actOnEvent</span><span class="o">:</span>       <span class="nx">defaultActOnEvent</span>
+  <span class="p">};</span>
+
+  <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">justKidding</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">new</span> <span class="nx">JustKidding</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-36'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-36">&#182;</a>
+        </div>
+        <p>Export JustKidding into the global namespace.</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="nb">window</span><span class="p">.</span><span class="nx">JustKidding</span> <span class="o">=</span> <span class="nx">JustKidding</span><span class="p">;</span>
+
+<span class="p">}(</span><span class="nx">jQuery</span><span class="p">,</span> <span class="k">this</span><span class="p">));</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
