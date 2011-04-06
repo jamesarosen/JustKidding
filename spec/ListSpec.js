@@ -24,7 +24,7 @@ describe('JustKidding', function() {
 
     describe('option initialSelector', function() {
       it('should assume "first-child" if not specified', function() {
-        $('#events').justKidding({ initialSelector: null });
+        $('#events').justKidding({});
         expect($('.jk-current')).toHaveAttr('data-index', 1);
       });
 

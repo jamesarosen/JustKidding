@@ -20,8 +20,8 @@ describe('JustKidding', function() {
 
     beforeEach(function() {
       setFixtures(fixture);
-      jk1 = $('#collectiveNouns').justKidding().data('justKidding');
-      jk2 = $('#columns'        ).justKidding().data('justKidding');
+      jk1 = new JustKidding('#collectiveNouns');
+      jk2 = new JustKidding('#columns');
     });
 
     it('should leave the first one in-focus', function() {
